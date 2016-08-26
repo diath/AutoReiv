@@ -2,6 +2,7 @@ import discord
 import asyncio
 import os
 import sys
+import re
 
 from plugin import BasePlugin
 
@@ -22,6 +23,14 @@ class AutoReiv(discord.Client):
 
 		print('* Loaded {} plugins...'.format(len(self.plugins)))
 		for plugin in self.plugins:
+			pattern = ''
+			try:
+				pattern = getattr(plugin, 'pattern')
+			except AttributeError:
+				pass
+			else:
+				plugin.pattern = re.compile(pattern)
+
 			print('\t- {}'.format(plugin.name))
 
 	def get_commands(self):
@@ -44,8 +53,27 @@ class AutoReiv(discord.Client):
 		print('* [#{}] {}: {}'.format(msg.channel, msg.author, msg.content))
 
 		for plugin in self.plugins:
+			hasCommand = False
+			hasPattern = False
+
+			# Check for command attribute
+			try:
+				getattr(plugin, 'command')
+			except AttributeError:
+				pass
+			else:
+				hasCommand = True
+
+			# Check for pattern attribute
+			try:
+				getattr(plugin, 'pattern')
+			except AttributeError:
+				pass
+			else:
+				hasPattern = True
+
 			data = {}
-			if plugin.command is not None:
+			if hasCommand:
 				if type(plugin.command) is str:
 					cmd = '{}{}'.format(self.trigger, plugin.command)
 					if plugin.reqParams:
@@ -80,8 +108,13 @@ class AutoReiv(discord.Client):
 						break
 				else:
 					print('* Unknown plugin command type in {}'.format(plugin.name))
-			elif plugin.pattern is not None:
-				pass
+			elif hasPattern:
+				match = plugin.pattern.match(msg.content)
+				if match:
+					data['match'] = match
+					data['groups'] = match.groups()
+
+					yield from plugin.callback(self, msg, data)
 
 	@asyncio.coroutine
 	def joined(self, member):
