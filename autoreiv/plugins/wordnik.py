@@ -3,6 +3,7 @@ import requests
 import json
 
 from autoreiv import BasePlugin
+from autoreiv import config
 
 class Plugin(BasePlugin):
 	def __init__(self):
@@ -14,7 +15,7 @@ class Plugin(BasePlugin):
 	@asyncio.coroutine
 	def callback(self, bot, msg, data):
 		req = requests.get('http://api.wordnik.com/v4/word.json/{}/definitions?api_key={}&limit=3'.format(
-			data.get('param'), bot.config.get('tokens').get('wordnik')
+			data.get('param'), config.get('tokens').get('wordnik')
 		))
 		if req.status_code != 200:
 			yield from bot.reply(msg, 'Invalid reply from the server.')

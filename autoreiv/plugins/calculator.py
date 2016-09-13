@@ -2,6 +2,7 @@ import asyncio
 import wolframalpha
 
 from autoreiv import BasePlugin
+from autoreiv import config
 
 class Plugin(BasePlugin):
 	def __init__(self):
@@ -14,7 +15,7 @@ class Plugin(BasePlugin):
 	@asyncio.coroutine
 	def callback(self, bot, msg, data):
 		if self.client is None:
-			client = wolframalpha.Client(bot.config.get('tokens').get('wolfram'))
+			client = wolframalpha.Client(config.get('tokens').get('wolfram'))
 
 		try:
 			res = client.query(data.get('param'))

@@ -1,7 +1,9 @@
 import asyncio
 import time
 
-from autoreiv import AutoReiv
+from autoreiv.autoreiv import AutoReiv
+from autoreiv.config import config
+from autoreiv.plugin import BasePlugin
 
 def main():
 	while True:
@@ -9,13 +11,10 @@ def main():
 		bot.load()
 
 		try:
-			bot.run(bot.config.get('login'), bot.config.get('password'))
+			bot.run(config.get('login'), config.get('password'))
 		except Exception as e:
 			print('* Crashed with error: {}'.format(e))
 		finally:
-			if not bot.is_closed:
-				bot.close()
-
 			print('* Disconnected.')
 
 		asyncio.set_event_loop(asyncio.new_event_loop())
@@ -25,6 +24,3 @@ def main():
 			time.sleep(10)
 		except KeyboardInterrupt:
 			break
-
-if __name__ == '__main__':
-	main()

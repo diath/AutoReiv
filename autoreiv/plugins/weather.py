@@ -6,6 +6,7 @@ from math import floor
 from string import capwords
 
 from autoreiv import BasePlugin
+from autoreiv import config
 
 def ct(timestamp):
 	return strftime('%H:%M:%I', localtime(timestamp))
@@ -20,7 +21,7 @@ class Plugin(BasePlugin):
 	@asyncio.coroutine
 	def callback(self, bot, msg, data):
 		req = requests.get('http://api.openweathermap.org/data/2.5/weather?q={}&units=metric&APPID={}'.format(
-			data.get('param'), bot.config.get('tokens').get('weather')
+			data.get('param'), config.get('tokens').get('weather')
 		))
 		if req.status_code != 200:
 			yield from bot.reply(msg, 'Invalid reply from the server.')

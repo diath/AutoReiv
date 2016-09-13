@@ -4,7 +4,12 @@ import os
 import sys
 import re
 
-from plugin import BasePlugin
+from autoreiv.config import config
+
+PLUGINS = [
+	'calculator', 'commands', 'imdb', 'lolcounter',
+	'roll', 'urbandict', 'weather', 'wiki', 'wordnik'
+]
 
 class AutoReiv(discord.Client):
 	def __init__(self):
@@ -12,13 +17,11 @@ class AutoReiv(discord.Client):
 		super().__init__()
 
 		self.plugins = []
-		self.config = __import__('config', globals(), locals(), '[*]').config
-		self.trigger = self.config.get('trigger')
+		self.trigger = config.get('trigger')
 
 	def load(self):
-		names = [name[:-3] for name in os.listdir('./plugins') if name.endswith('.py') and name != '__init__.py']
-		for name in names:
-			mod = __import__('plugins.{}'.format(name), globals(), locals(), ['*'])
+		for name in PLUGINS:
+			mod = __import__('autoreiv.plugins.{}'.format(name), globals(), locals(), ['*'])
 			self.plugins.append(mod.Plugin())
 
 		print('* Loaded {} plugins...'.format(len(self.plugins)))
