@@ -22,9 +22,10 @@ Installing
 * git clone https://github.com/diath/AutoReiv
 * cd AutoReiv
 * pip install -r requirements.txt
-* cd source
+* cd autoreiv
 * cp config.sample.py config.py
 * vim config.py
+* cd ..
 * python run.py
 
 License
