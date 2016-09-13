@@ -13,6 +13,9 @@ def main():
 		except Exception as e:
 			print('* Crashed with error: {}'.format(e))
 		finally:
+			if not bot.is_closed:
+				bot.close()
+
 			print('* Disconnected.')
 
 		asyncio.set_event_loop(asyncio.new_event_loop())
