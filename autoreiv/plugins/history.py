@@ -29,10 +29,10 @@ class Plugin(BasePlugin):
 		query = data.get('param')
 		results = self.db.execute('SELECT name, timestamp, message FROM history WHERE message LIKE ? ORDER BY timestamp ASC;', ('%{}%'.format(query),)).fetchall()
 		if not results:
-			yield from bot.reply(msg, 'Found no occurences of "{}".'.format(query))
+			yield from bot.reply(msg, 'Found no occurrences of "{}".'.format(query))
 			return
 
-		yield from bot.reply(msg, 'Found {} occurence(s) of "{}":\n{}'.format(
+		yield from bot.reply(msg, 'Found {} occurrence(s) of "{}":\n{}'.format(
 			len(results),
 			query,
 			'\n'.join('{} @ {}: {}'.format(result[0], datetime.fromtimestamp(result[1]).strftime('%d %B %Y, %H:%M:%S'), result[2]) for result in results)
