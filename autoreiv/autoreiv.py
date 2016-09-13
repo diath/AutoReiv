@@ -8,7 +8,8 @@ from autoreiv.config import config
 
 PLUGINS = [
 	'calculator', 'commands', 'imdb', 'lolcounter',
-	'roll', 'urbandict', 'weather', 'wiki', 'wordnik'
+	'roll', 'urbandict', 'weather', 'wiki', 'wordnik',
+	'history',
 ]
 
 class AutoReiv(discord.Client):
@@ -64,6 +65,9 @@ class AutoReiv(discord.Client):
 			return
 
 		print('* [#{}] {}: {}'.format(msg.channel, msg.author.name, clean))
+
+		if msg.author.id == self.user.id:
+			pass
 
 		for plugin in self.plugins:
 			hasCommand = False
