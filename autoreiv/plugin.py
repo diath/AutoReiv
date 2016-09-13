@@ -10,3 +10,11 @@ class BasePlugin(object):
 	@asyncio.coroutine
 	def callback(self, bot, data):
 		pass
+
+	@asyncio.coroutine
+	def on_ready(self, bot):
+		pass
+
+	@asyncio.coroutine
+	def on_message(self, bot, msg):
+		pass

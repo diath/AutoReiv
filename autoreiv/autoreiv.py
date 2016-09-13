@@ -49,10 +49,16 @@ class AutoReiv(discord.Client):
 
 	@asyncio.coroutine
 	def on_ready(self):
+		for plugin in self.plugins:
+			yield from plugin.on_ready(self)
+
 		print('* Ready')
 
 	@asyncio.coroutine
 	def on_message(self, msg):
+		for plugin in self.plugins:
+			yield from plugin.on_message(self, msg)
+
 		clean = msg.clean_content
 		if not clean:
 			return
