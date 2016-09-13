@@ -50,7 +50,11 @@ class AutoReiv(discord.Client):
 
 	@asyncio.coroutine
 	def on_message(self, msg):
-		print('* [#{}] {}: {}'.format(msg.channel, msg.author, msg.content))
+		clean = msg.clean_content
+		if not clean:
+			return
+
+		print('* [#{}] {}: {}'.format(msg.channel, msg.author.name, clean))
 
 		for plugin in self.plugins:
 			hasCommand = False
