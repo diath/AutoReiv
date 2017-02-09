@@ -6,11 +6,7 @@ import re
 
 from autoreiv.config import config
 
-PLUGINS = [
-	'calculator', 'commands', 'imdb', 'lolcounter',
-	'roll', 'urbandict', 'weather', 'wiki', 'wordnik',
-	'history',
-]
+PLUGINS_PATH = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'plugins')
 
 class AutoReiv(discord.Client):
 	def __init__(self):
@@ -21,8 +17,11 @@ class AutoReiv(discord.Client):
 		self.trigger = config.get('trigger')
 
 	def load(self):
-		for name in PLUGINS:
-			mod = __import__('autoreiv.plugins.{}'.format(name), globals(), locals(), ['*'])
+		for name in os.listdir(PLUGINS_PATH):
+			if not os.path.isfile(os.path.join(PLUGINS_PATH, name)) or name == '__init__.py':
+				continue
+
+			mod = __import__('autoreiv.plugins.{}'.format(name[:-3]), globals(), locals(), ['*'])
 			self.plugins.append(mod.Plugin())
 
 		print('* Loaded {} plugins...'.format(len(self.plugins)))
