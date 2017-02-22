@@ -8,10 +8,11 @@ rdice = re.compile('(\d+)d(\d+)')
 
 class Plugin(BasePlugin):
     def __init__(self):
-        super().__init__()
-        self.name = 'Roll'
-        self.command = 'roll'
-        self.reqParams = True
+        super().__init__({
+            'name': 'Roll',
+            'command': 'roll',
+            'req_params': True,
+        })
 
     @asyncio.coroutine
     def callback(self, bot, msg, data):

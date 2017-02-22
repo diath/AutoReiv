@@ -13,10 +13,11 @@ def ct(timestamp):
 
 class Plugin(BasePlugin):
     def __init__(self):
-        super().__init__()
-        self.name = 'Weather'
-        self.command = ['w', 'weather']
-        self.reqParams = True
+        super().__init__({
+            'name': 'Weather',
+            'command': ['w', 'weather'],
+            'req_params': True,
+        })
 
     @asyncio.coroutine
     def callback(self, bot, msg, data):

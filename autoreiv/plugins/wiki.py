@@ -5,10 +5,11 @@ from autoreiv import BasePlugin
 
 class Plugin(BasePlugin):
     def __init__(self):
-        super().__init__()
-        self.name = 'Wikipedia'
-        self.command = 'wiki'
-        self.reqParams = True
+        super().__init__({
+            'name': 'Wikipedia',
+            'command': 'wiki',
+            'req_params': True,
+        })
 
     @asyncio.coroutine
     def callback(self, bot, msg, data):

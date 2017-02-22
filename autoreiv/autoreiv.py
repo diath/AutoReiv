@@ -1,6 +1,5 @@
 import asyncio
 import os
-import sys
 import re
 
 import discord
@@ -27,13 +26,8 @@ class AutoReiv(discord.Client):
 
         print('* Loaded {} plugins...'.format(len(self.plugins)))
         for plugin in self.plugins:
-            pattern = ''
-            try:
-                pattern = getattr(plugin, 'pattern')
-            except AttributeError:
-                pass
-            else:
-                plugin.pattern = re.compile(pattern)
+            if plugin.pattern is not None:
+                plugin.pattern = re.compile(plugin.pattern)
 
             print('\t- {}'.format(plugin.name))
 
@@ -41,9 +35,9 @@ class AutoReiv(discord.Client):
         commands = []
         for plugin in self.plugins:
             if plugin.command is not None:
-                if type(plugin.command) is str:
+                if isinstance(plugin.command, str):
                     commands.append(plugin.command)
-                elif type(plugin.command) is list:
+                elif isinstance(plugin.command, list):
                     commands.append('{} ({})'.format(plugin.command[0], ', '.join(plugin.command[1:])))
 
         return commands
@@ -70,62 +64,24 @@ class AutoReiv(discord.Client):
             pass
 
         for plugin in self.plugins:
-            hasCommand = False
-            hasPattern = False
-
-            # Check for command attribute
-            try:
-                getattr(plugin, 'command')
-            except AttributeError:
-                pass
-            else:
-                hasCommand = True
-
-            # Check for pattern attribute
-            try:
-                getattr(plugin, 'pattern')
-            except AttributeError:
-                pass
-            else:
-                hasPattern = True
-
             data = {}
-            if hasCommand:
-                if type(plugin.command) is str:
-                    cmd = '{}{}'.format(self.trigger, plugin.command)
-                    if plugin.reqParams:
+            if plugin.command is not None:
+                commands = plugin.command if isinstance(plugin.command, list) else [plugin.command]
+                for command in commands:
+                    cmd = '{}{}'.format(self.trigger, command)
+                    if plugin.req_params:
                         cmd += ' '
 
-                    if msg.content.startswith(cmd):
-                        data['command'] = plugin.command
-                        if plugin.reqParams:
+                    if (not plugin.req_params and msg.content == cmd) or (plugin.req_params and msg.content.startswith(cmd)):
+                        data['command'] = command
+                        if plugin.req_params:
                             data['param'] = msg.content[len(cmd):]
                             data['params'] = data.get('param').split(' ')
 
                         yield from plugin.callback(self, msg, data)
                         break
-                elif type(plugin.command) is list:
-                    outer_break = False
-                    for command in plugin.command:
-                        cmd = '{}{}'.format(self.trigger, command)
-                        if plugin.reqParams:
-                            cmd += ' '
 
-                        if msg.content.startswith(cmd):
-                            data['command'] = command
-                            if plugin.reqParams:
-                                data['param'] = msg.content[len(cmd):]
-                                data['params'] = data.get('param').split(' ')
-
-                            yield from plugin.callback(self, msg, data)
-                            outer_break = True
-                            break
-
-                    if outer_break:
-                        break
-                else:
-                    print('* Unknown plugin command type in {}'.format(plugin.name))
-            elif hasPattern:
+            if plugin.pattern is not None:
                 match = plugin.pattern.match(msg.content)
                 if match:
                     data['match'] = match

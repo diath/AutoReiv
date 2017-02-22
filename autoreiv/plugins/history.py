@@ -9,10 +9,12 @@ from autoreiv import config
 
 class Plugin(BasePlugin):
     def __init__(self):
-        super().__init__()
-        self.name = 'History'
-        self.command = 'search'
-        self.reqParams = True
+        super().__init__({
+            'name': 'History',
+            'command': 'search',
+            'req_params': True,
+        })
+
         self.db = None
 
     def __del__(self):

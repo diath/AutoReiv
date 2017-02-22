@@ -6,10 +6,11 @@ from autoreiv import BasePlugin
 
 class Plugin(BasePlugin):
     def __init__(self):
-        super().__init__()
-        self.name = 'Urban Dictionary'
-        self.command = 'ud'
-        self.reqParams = True
+        super().__init__({
+            'name': 'Urban Dictionary',
+            'command': 'ud',
+            'req_params': True,
+        })
 
     @asyncio.coroutine
     def callback(self, bot, msg, data):

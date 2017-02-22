@@ -10,11 +10,11 @@ config = {
     ],
     # Tokens for API gateways
     'tokens': {
-        # WolframAlpha
+        # https://www.wolframalpha.com/
         'wolfram': '',
-        # Wordnik
+        # https://www.wordnik.com/
         'wordnik': '',
-        # OpenWeatherMap
+        # https://openweathermap.org/
         'weather': '',
     }
 }

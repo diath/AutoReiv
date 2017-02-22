@@ -4,10 +4,10 @@ from autoreiv import BasePlugin
 
 class Plugin(BasePlugin):
     def __init__(self):
-        super().__init__()
-        self.name = 'Commands'
-        self.command = 'commands'
-        self.reqParams = False
+        super().__init__({
+            'name': 'Commands',
+            'command': 'commands',
+        })
 
     @asyncio.coroutine
     def callback(self, bot, msg, data):

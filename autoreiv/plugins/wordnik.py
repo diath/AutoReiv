@@ -7,10 +7,11 @@ from autoreiv import config
 
 class Plugin(BasePlugin):
     def __init__(self):
-        super().__init__()
-        self.name = 'Wordnik'
-        self.command = 'define'
-        self.reqParams = True
+        super().__init__({
+            'name': 'Wordnik',
+            'command': 'define',
+            'req_params': True,
+        })
 
     @asyncio.coroutine
     def callback(self, bot, msg, data):
