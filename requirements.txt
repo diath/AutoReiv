@@ -1,5 +1,5 @@
-git+https://github.com/Rapptz/discord.py@async
-beautifulsoup4
-requests
-wikipedia
-wolframalpha
+discord.py==0.16.6
+beautifulsoup4==4.5.3
+requests==2.18.4
+wikipedia==1.4.0
+wolframalpha==3.0
