@@ -11,7 +11,7 @@ class BasePlugin(object):
         return '<Plugin.{}>'.format(self.name)
 
     @asyncio.coroutine
-    def callback(self, bot, data):
+    def callback(self, bot, msg, data):
         pass
 
     @asyncio.coroutine

@@ -19,7 +19,7 @@ class Plugin(BasePlugin):
             yield from bot.reply(msg, 'Champion not found.')
         else:
             soup = BeautifulSoup(req.text, 'html.parser')
-            n = 0
+            count = 0
             names = []
 
             for block in soup.find_all('div', {'class': 'weak-block'}):
@@ -28,10 +28,12 @@ class Plugin(BasePlugin):
                         names.append(name.text)
                         break
 
-                    n = n + 1
-                    if n == 5:
+                    count = count + 1
+                    if count == 5:
                         break
 
                 break
 
-            yield from bot.reply(msg, 'Champions that counter {}: {}'.format(data.get('param'), ', '.join(names)))
+            yield from bot.reply(msg, 'Champions that counter {}: {}'.format(
+                data.get('param'), ', '.join(names)
+            ))

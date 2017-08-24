@@ -11,4 +11,6 @@ class Plugin(BasePlugin):
 
     @asyncio.coroutine
     def callback(self, bot, msg, data):
-        yield from bot.reply(msg, 'Available commands (trigger "{}"): {}'.format(bot.trigger, ', '.join(bot.get_commands())))
+        yield from bot.reply(msg, 'Available commands (trigger "{}"): {}'.format(
+            bot.trigger, ', '.join(bot.get_commands())
+        ))

@@ -1,6 +1,6 @@
 import asyncio
-import requests
 import json
+import requests
 
 from autoreiv import BasePlugin
 from autoreiv import config
@@ -22,11 +22,11 @@ class Plugin(BasePlugin):
             yield from bot.reply(msg, 'Invalid reply from the server.')
         else:
             info = json.loads(req.text)
-            if len(info) == 0:
+            if not info:
                 yield from bot.reply(msg, 'No definitions for {}.'.format(data.get('param')))
             else:
                 message = 'Definitions for "{}":'.format(data.get('param'))
-                for x in range(len(info)):
-                    message += '\n {}) {}'.format(x + 1, info[x]['text'])
+                for (index, elem, ) in enumerate(info):
+                    message += '\n {}) {}'.format(index + 1, elem.get('text'))
 
                 yield from bot.reply(msg, message)

@@ -1,6 +1,6 @@
 import asyncio
-import requests
 import json
+import requests
 
 from autoreiv import BasePlugin
 

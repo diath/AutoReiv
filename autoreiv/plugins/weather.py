@@ -1,14 +1,16 @@
 import asyncio
-import requests
 import json
+
 from time import strftime, localtime
 from math import floor
 from string import capwords
 
+import requests
+
 from autoreiv import BasePlugin
 from autoreiv import config
 
-def ct(timestamp):
+def format_time(timestamp):
     return strftime('%H:%M:%I', localtime(timestamp))
 
 class Plugin(BasePlugin):
@@ -34,5 +36,5 @@ class Plugin(BasePlugin):
                 yield from bot.reply(msg, '{} ({}) {}°C ({}, Humidity: {}%, Sunrise: {}, Sunset: {})'.format(
                     info['name'], info['sys']['country'], floor(info['main']['temp']),
                     capwords(info['weather'][0]['description']), info['main']['humidity'],
-                    ct(info['sys']['sunrise']), ct(info['sys']['sunset'])
+                    format_time(info['sys']['sunrise']), format_time(info['sys']['sunset'])
                 ))

@@ -4,7 +4,9 @@ import re
 
 from autoreiv import BasePlugin
 
-rdice = re.compile('(\d+)d(\d+)')
+RE_DICE = re.compile(r'(\d+)d(\d+)')
+COUNT_MAX = 10
+FACES_MAX = 36
 
 class Plugin(BasePlugin):
     def __init__(self):
@@ -24,16 +26,16 @@ class Plugin(BasePlugin):
             if len(args) == 2:
                 yield from bot.reply(msg, '{}'.format(random.randint(int(args[0]), int(args[1]))))
         else:
-            result = rdice.match(data.get('param'))
+            result = RE_DICE.match(data.get('param'))
             if result:
                 count = int(result.group(1))
                 faces = int(result.group(2))
 
-                if count > 10 or faces > 36:
-                    yield from bot.reply(msg, 'You can only roll up to 10 dice with up to 36 faces.')
+                if count > COUNT_MAX or FACES_MAX > 36:
+                    yield from bot.reply(msg, 'You can only roll up to {} dice with''up to {} faces.'.format(COUNT_MAX, FACES_MAX))
                 else:
                     total = []
-                    for x in range(count):
+                    for _ in range(count):
                         total.append(random.randint(1, faces))
 
                     yield from bot.reply(msg, '{} ({} total)'.format(
